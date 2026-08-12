@@ -1,0 +1,47 @@
+# Dependências
+node_modules/
+.pnpm-store/
+.yarn/
+.yarn-cache/
+
+# Variáveis de ambiente
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Builds
+dist/
+build/
+out/
+
+# Logs
+*.log
+logs/
+
+# Cache
+.cache/
+.parcel-cache/
+.vite/
+
+# IDE / Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.swp
+
+# Banco de dados local
+*.sqlite
+*.sqlite3
+
+# Arquivos de configuração local
+config.local.*
