@@ -5,10 +5,10 @@ Sistema web para gerenciamento, acompanhamento e análise do recebimento de carg
 ## Stack pretendida
 
 - Frontend: React
-- Backend: Node.js
+- Backend: Node.js + Express
 - Banco de dados: PostgreSQL
-- Dashboard: a definir
-- Assistente de IA: a definir
+- Dashboard: React
+- Assistente de IA: integração com API de IA
 
 ## Objetivo
 
