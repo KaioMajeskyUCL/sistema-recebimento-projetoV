@@ -6,7 +6,7 @@ Sistema web para gerenciamento, acompanhamento e análise do recebimento de carg
 
 - Frontend: React
 - Backend: Node.js + Express
-- Banco de dados: PostgreSQL
+- Banco de dados: MySQL
 - Dashboard: React
 - Assistente de IA: integração com API de IA
 
