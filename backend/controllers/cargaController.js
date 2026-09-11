@@ -8,11 +8,27 @@ async function criar(req, res) {
             mensagem: 'Carga cadastrada com sucesso!',
             id: resultado.insertId
         });
+
     } catch (erro) {
         console.error(erro);
 
+        // Número da carga duplicado
+        if (erro.code === 'ER_DUP_ENTRY') {
+            return res.status(409).json({
+                mensagem: 'Já existe uma carga cadastrada com esse número.'
+            });
+        }
+
+        // Fornecedor informado não existe
+        if (erro.code === 'ER_NO_REFERENCED_ROW_2') {
+            return res.status(400).json({
+                mensagem: 'O fornecedor informado não existe.'
+            });
+        }
+
+        // Outros erros
         res.status(400).json({
-            mensagem: erro.message
+            mensagem: erro.message || 'Erro ao cadastrar carga.'
         });
     }
 }
