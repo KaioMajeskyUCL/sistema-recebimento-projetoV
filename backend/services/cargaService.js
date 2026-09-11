@@ -32,6 +32,11 @@ async function criar(carga) {
     return await cargaRepository.criar(carga);
 }
 
+async function listarTodas() {
+    return await cargaRepository.listarTodas();
+}
+
 module.exports = {
-    criar
+    criar,
+    listarTodas
 };

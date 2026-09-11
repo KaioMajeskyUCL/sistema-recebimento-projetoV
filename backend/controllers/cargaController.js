@@ -33,6 +33,22 @@ async function criar(req, res) {
     }
 }
 
+async function listarTodas(req, res) {
+    try {
+        const cargas = await cargaService.listarTodas();
+
+        res.status(200).json(cargas);
+
+    } catch (erro) {
+        console.error(erro);
+
+        res.status(500).json({
+            mensagem: 'Erro ao consultar cargas.'
+        });
+    }
+}
+
 module.exports = {
-    criar
+    criar,
+    listarTodas
 };
