@@ -6,5 +6,6 @@ const router = express.Router();
 router.get('/', cargaController.listarTodas);
 router.get('/:id', cargaController.buscarPorId);
 router.post('/', cargaController.criar);
+router.put('/:id', cargaController.atualizar);
 
 module.exports = router;

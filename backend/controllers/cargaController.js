@@ -69,8 +69,44 @@ async function buscarPorId(req, res) {
     }
 }
 
+async function atualizar(req, res) {
+    try {
+        await cargaService.atualizar(req.params.id, req.body);
+
+        res.status(200).json({
+            mensagem: 'Carga atualizada com sucesso!'
+        });
+
+    } catch (erro) {
+        console.error(erro);
+
+        if (erro.message === 'Carga não encontrada.') {
+            return res.status(404).json({
+                mensagem: erro.message
+            });
+        }
+
+        if (erro.code === 'ER_DUP_ENTRY') {
+            return res.status(409).json({
+                mensagem: 'Já existe uma carga cadastrada com esse número.'
+            });
+        }
+
+        if (erro.code === 'ER_NO_REFERENCED_ROW_2') {
+            return res.status(400).json({
+                mensagem: 'O fornecedor informado não existe.'
+            });
+        }
+
+        res.status(400).json({
+            mensagem: erro.message || 'Erro ao atualizar carga.'
+        });
+    }
+}
+
 module.exports = {
     criar,
     listarTodas,
-    buscarPorId
+    buscarPorId,
+    atualizar
 };

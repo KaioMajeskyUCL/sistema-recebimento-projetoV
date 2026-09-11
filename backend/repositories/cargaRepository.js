@@ -82,8 +82,43 @@ async function buscarPorId(id) {
     return resultado[0];
 }
 
+async function atualizar(id, carga) {
+    const sql = `
+        UPDATE Carga
+        SET
+            id_fornecedor = ?,
+            numero_carga = ?,
+            data = ?,
+            tipo_carga = ?,
+            quantidade_paletes = ?,
+            hora_chegada = ?,
+            hora_docagem = ?,
+            hora_finalizacao = ?,
+            status = ?
+        WHERE id = ?
+    `;
+
+    const valores = [
+        carga.id_fornecedor,
+        carga.numero_carga,
+        carga.data,
+        carga.tipo_carga,
+        carga.quantidade_paletes,
+        carga.hora_chegada,
+        carga.hora_docagem || null,
+        carga.hora_finalizacao || null,
+        carga.status,
+        id
+    ];
+
+    const [resultado] = await db.execute(sql, valores);
+
+    return resultado;
+}
+
 module.exports = {
     criar,
     listarTodas,
-    buscarPorId
+    buscarPorId,
+    atualizar
 };
