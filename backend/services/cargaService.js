@@ -94,10 +94,42 @@ async function excluir(id) {
     return await cargaRepository.excluir(id);
 }
 
+async function atualizarStatus(id, status, idUsuario) {
+    const cargaExistente = await cargaRepository.buscarPorId(id);
+
+    if (!cargaExistente) {
+        throw new Error('Carga não encontrada.');
+    }
+
+    const statusValidos = [
+        'SEM_STATUS',
+        'PRESENTE',
+        'DOCADO',
+        'EM_CONFERENCIA',
+        'FINALIZADO',
+        'COM_PROBLEMAS'
+    ];
+
+    if (!statusValidos.includes(status)) {
+        throw new Error('Status inválido.');
+    }
+
+    if (!idUsuario) {
+        throw new Error('Usuário é obrigatório para alterar o status.');
+    }
+
+    return await cargaRepository.atualizarStatusComHistorico(
+        id,
+        status,
+        idUsuario
+    );
+}
+
 module.exports = {
     criar,
     listarTodas,
     buscarPorId,
     atualizar,
-    excluir
+    excluir,
+    atualizarStatus
 };

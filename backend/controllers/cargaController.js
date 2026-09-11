@@ -127,10 +127,46 @@ async function excluir(req, res) {
     }
 }
 
+async function atualizarStatus(req, res) {
+    try {
+        const { status, id_usuario } = req.body;
+
+        await cargaService.atualizarStatus(
+            req.params.id,
+            status,
+            id_usuario
+        );
+
+        res.status(200).json({
+            mensagem: 'Status da carga atualizado e registrado no histórico!'
+        });
+
+    } catch (erro) {
+        console.error(erro);
+
+        if (erro.message === 'Carga não encontrada.') {
+            return res.status(404).json({
+                mensagem: erro.message
+            });
+        }
+
+        if (erro.code === 'ER_NO_REFERENCED_ROW_2') {
+            return res.status(400).json({
+                mensagem: 'O usuário informado não existe.'
+            });
+        }
+
+        res.status(400).json({
+            mensagem: erro.message
+        });
+    }
+}
+
 module.exports = {
     criar,
     listarTodas,
     buscarPorId,
     atualizar,
-    excluir
+    excluir,
+    atualizarStatus
 };

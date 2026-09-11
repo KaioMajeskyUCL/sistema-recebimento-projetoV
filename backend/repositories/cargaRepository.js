@@ -127,10 +127,63 @@ async function excluir(id) {
     return resultado;
 }
 
+async function atualizarStatus(id, status) {
+    const sql = `
+        UPDATE Carga
+        SET status = ?
+        WHERE id = ?
+    `;
+
+    const [resultado] = await db.execute(sql, [status, id]);
+
+    return resultado;
+}
+
+async function atualizarStatusComHistorico(id, status, idUsuario) {
+    const conexao = await db.getConnection();
+
+    try {
+        await conexao.beginTransaction();
+
+        await conexao.execute(
+            `
+            UPDATE Carga
+            SET status = ?
+            WHERE id = ?
+            `,
+            [status, id]
+        );
+
+        await conexao.execute(
+            `
+            INSERT INTO HistoricoStatus (
+                id_carga,
+                status,
+                data_hora,
+                id_usuario
+            )
+            VALUES (?, ?, NOW(), ?)
+            `,
+            [id, status, idUsuario]
+        );
+
+        await conexao.commit();
+
+    } catch (erro) {
+        await conexao.rollback();
+        throw erro;
+
+    } finally {
+        conexao.release();
+    }
+}
+
 module.exports = {
     criar,
     listarTodas,
     buscarPorId,
     atualizar,
-    excluir
+    excluir,
+    atualizarStatus,
+    atualizarStatusComHistorico
 };
