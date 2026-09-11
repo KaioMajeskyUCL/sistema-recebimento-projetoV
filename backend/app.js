@@ -7,7 +7,11 @@ const cargaRoutes = require('./routes/cargaRoutes');
 
 const app = express();
 
+const authRoutes = require('./routes/authRoutes');
+
 app.use(express.json());
+
+app.use('/auth', authRoutes);
 
 app.use('/cargas', cargaRoutes);
 
