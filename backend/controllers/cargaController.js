@@ -48,7 +48,29 @@ async function listarTodas(req, res) {
     }
 }
 
+async function buscarPorId(req, res) {
+    try {
+        const carga = await cargaService.buscarPorId(req.params.id);
+
+        res.status(200).json(carga);
+
+    } catch (erro) {
+        console.error(erro);
+
+        if (erro.message === 'Carga não encontrada.') {
+            return res.status(404).json({
+                mensagem: erro.message
+            });
+        }
+
+        res.status(500).json({
+            mensagem: 'Erro ao consultar carga.'
+        });
+    }
+}
+
 module.exports = {
     criar,
-    listarTodas
+    listarTodas,
+    buscarPorId
 };

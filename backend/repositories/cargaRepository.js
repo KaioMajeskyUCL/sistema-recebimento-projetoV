@@ -57,7 +57,33 @@ async function listarTodas() {
     return resultado;
 }
 
+async function buscarPorId(id) {
+    const sql = `
+        SELECT
+            c.id,
+            c.numero_carga,
+            c.data,
+            c.tipo_carga,
+            c.quantidade_paletes,
+            c.hora_chegada,
+            c.hora_docagem,
+            c.hora_finalizacao,
+            c.status,
+            c.id_fornecedor,
+            f.nome AS fornecedor
+        FROM Carga c
+        INNER JOIN Fornecedor f
+            ON c.id_fornecedor = f.id
+        WHERE c.id = ?
+    `;
+
+    const [resultado] = await db.execute(sql, [id]);
+
+    return resultado[0];
+}
+
 module.exports = {
     criar,
-    listarTodas
+    listarTodas,
+    buscarPorId
 };

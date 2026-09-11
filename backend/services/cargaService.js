@@ -36,7 +36,18 @@ async function listarTodas() {
     return await cargaRepository.listarTodas();
 }
 
+async function buscarPorId(id) {
+    const carga = await cargaRepository.buscarPorId(id);
+
+    if (!carga) {
+        throw new Error('Carga não encontrada.');
+    }
+
+    return carga;
+}
+
 module.exports = {
     criar,
-    listarTodas
+    listarTodas,
+    buscarPorId
 };
