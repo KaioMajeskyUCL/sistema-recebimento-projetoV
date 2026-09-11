@@ -125,11 +125,22 @@ async function atualizarStatus(id, status, idUsuario) {
     );
 }
 
+async function buscarHistorico(id) {
+    const cargaExistente = await cargaRepository.buscarPorId(id);
+
+    if (!cargaExistente) {
+        throw new Error('Carga não encontrada.');
+    }
+
+    return await cargaRepository.buscarHistorico(id);
+}
+
 module.exports = {
     criar,
     listarTodas,
     buscarPorId,
     atualizar,
     excluir,
-    atualizarStatus
+    atualizarStatus,
+    buscarHistorico
 };

@@ -9,5 +9,6 @@ router.post('/', cargaController.criar);
 router.put('/:id', cargaController.atualizar);
 router.delete('/:id', cargaController.excluir);
 router.patch('/:id/status', cargaController.atualizarStatus);
+router.get('/:id/historico', cargaController.buscarHistorico);
 
 module.exports = router;

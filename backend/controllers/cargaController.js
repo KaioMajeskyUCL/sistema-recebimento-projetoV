@@ -162,11 +162,33 @@ async function atualizarStatus(req, res) {
     }
 }
 
+async function buscarHistorico(req, res) {
+    try {
+        const historico = await cargaService.buscarHistorico(req.params.id);
+
+        res.status(200).json(historico);
+
+    } catch (erro) {
+        console.error(erro);
+
+        if (erro.message === 'Carga não encontrada.') {
+            return res.status(404).json({
+                mensagem: erro.message
+            });
+        }
+
+        res.status(500).json({
+            mensagem: 'Erro ao consultar histórico da carga.'
+        });
+    }
+}
+
 module.exports = {
     criar,
     listarTodas,
     buscarPorId,
     atualizar,
     excluir,
-    atualizarStatus
+    atualizarStatus,
+    buscarHistorico
 };

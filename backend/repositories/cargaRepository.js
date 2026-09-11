@@ -178,6 +178,26 @@ async function atualizarStatusComHistorico(id, status, idUsuario) {
     }
 }
 
+async function buscarHistorico(idCarga) {
+    const sql = `
+        SELECT
+            h.id,
+            h.status,
+            h.data_hora,
+            h.id_usuario,
+            u.nome AS usuario
+        FROM HistoricoStatus h
+        INNER JOIN Usuario u
+            ON h.id_usuario = u.id
+        WHERE h.id_carga = ?
+        ORDER BY h.data_hora DESC
+    `;
+
+    const [resultado] = await db.execute(sql, [idCarga]);
+
+    return resultado;
+}
+
 module.exports = {
     criar,
     listarTodas,
@@ -185,5 +205,6 @@ module.exports = {
     atualizar,
     excluir,
     atualizarStatus,
-    atualizarStatusComHistorico
+    atualizarStatusComHistorico,
+    buscarHistorico
 };
