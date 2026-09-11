@@ -129,12 +129,14 @@ async function excluir(req, res) {
 
 async function atualizarStatus(req, res) {
     try {
-        const { status, id_usuario } = req.body;
+            const { status } = req.body;
+
+            const idUsuario = req.usuario.id;
 
         await cargaService.atualizarStatus(
             req.params.id,
             status,
-            id_usuario
+            idUsuario
         );
 
         res.status(200).json({

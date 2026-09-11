@@ -21,6 +21,24 @@ async function criar(usuario) {
     return resultado;
 }
 
+async function buscarPorEmail(email) {
+    const sql = `
+        SELECT
+            id,
+            nome,
+            email,
+            senha_hash,
+            perfil
+        FROM Usuario
+        WHERE email = ?
+    `;
+
+    const [resultado] = await db.execute(sql, [email]);
+
+    return resultado[0];
+}
+
 module.exports = {
-    criar
+    criar,
+    buscarPorEmail
 };

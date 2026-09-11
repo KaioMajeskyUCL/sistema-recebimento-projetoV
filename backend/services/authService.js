@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const usuarioRepository = require('../repositories/usuarioRepository');
+const jwt = require('jsonwebtoken');
 
 async function cadastrar(dados) {
     const { nome, email, senha, perfil } = dados;
@@ -31,6 +32,50 @@ async function cadastrar(dados) {
     });
 }
 
+async function login(email, senha) {
+    if (!email || !senha) {
+        throw new Error('E-mail e senha são obrigatórios.');
+    }
+
+    const usuario = await usuarioRepository.buscarPorEmail(email);
+
+    if (!usuario) {
+        throw new Error('E-mail ou senha inválidos.');
+    }
+
+    const senhaCorreta = await bcrypt.compare(
+        senha,
+        usuario.senha_hash
+    );
+
+    if (!senhaCorreta) {
+        throw new Error('E-mail ou senha inválidos.');
+    }
+
+    const token = jwt.sign(
+        {
+            id: usuario.id,
+            nome: usuario.nome,
+            perfil: usuario.perfil
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: '8h'
+        }
+    );
+
+    return {
+        token,
+        usuario: {
+            id: usuario.id,
+            nome: usuario.nome,
+            email: usuario.email,
+            perfil: usuario.perfil
+        }
+    };
+}
+
 module.exports = {
-    cadastrar
+    cadastrar,
+    login
 };

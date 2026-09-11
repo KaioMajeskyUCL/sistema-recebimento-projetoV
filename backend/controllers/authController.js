@@ -24,6 +24,28 @@ async function cadastrar(req, res) {
     }
 }
 
+async function login(req, res) {
+    try {
+        const { email, senha } = req.body;
+
+        const resultado = await authService.login(email, senha);
+
+        res.status(200).json({
+            mensagem: 'Login realizado com sucesso!',
+            token: resultado.token,
+            usuario: resultado.usuario
+        });
+
+    } catch (erro) {
+        console.error(erro);
+
+        res.status(401).json({
+            mensagem: erro.message
+        });
+    }
+}
+
 module.exports = {
-    cadastrar
+    cadastrar,
+    login
 };
