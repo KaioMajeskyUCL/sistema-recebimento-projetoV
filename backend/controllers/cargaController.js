@@ -104,9 +104,33 @@ async function atualizar(req, res) {
     }
 }
 
+async function excluir(req, res) {
+    try {
+        await cargaService.excluir(req.params.id);
+
+        res.status(200).json({
+            mensagem: 'Carga excluída com sucesso!'
+        });
+
+    } catch (erro) {
+        console.error(erro);
+
+        if (erro.message === 'Carga não encontrada.') {
+            return res.status(404).json({
+                mensagem: erro.message
+            });
+        }
+
+        res.status(400).json({
+            mensagem: 'Erro ao excluir carga.'
+        });
+    }
+}
+
 module.exports = {
     criar,
     listarTodas,
     buscarPorId,
-    atualizar
+    atualizar,
+    excluir
 };

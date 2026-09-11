@@ -7,5 +7,6 @@ router.get('/', cargaController.listarTodas);
 router.get('/:id', cargaController.buscarPorId);
 router.post('/', cargaController.criar);
 router.put('/:id', cargaController.atualizar);
+router.delete('/:id', cargaController.excluir);
 
 module.exports = router;

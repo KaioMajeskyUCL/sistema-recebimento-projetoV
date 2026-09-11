@@ -84,9 +84,20 @@ async function atualizar(id, carga) {
     return await cargaRepository.atualizar(id, carga);
 }
 
+async function excluir(id) {
+    const cargaExistente = await cargaRepository.buscarPorId(id);
+
+    if (!cargaExistente) {
+        throw new Error('Carga não encontrada.');
+    }
+
+    return await cargaRepository.excluir(id);
+}
+
 module.exports = {
     criar,
     listarTodas,
     buscarPorId,
-    atualizar
+    atualizar,
+    excluir
 };

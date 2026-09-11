@@ -116,9 +116,21 @@ async function atualizar(id, carga) {
     return resultado;
 }
 
+async function excluir(id) {
+    const sql = `
+        DELETE FROM Carga
+        WHERE id = ?
+    `;
+
+    const [resultado] = await db.execute(sql, [id]);
+
+    return resultado;
+}
+
 module.exports = {
     criar,
     listarTodas,
     buscarPorId,
-    atualizar
+    atualizar,
+    excluir
 };
