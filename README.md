@@ -1,19 +1,52 @@
 # Sistema de Gestão de Recebimento de Cargas
 
-Sistema web para gerenciamento, acompanhamento e análise do recebimento de cargas.
+Projeto desenvolvido para a disciplina Projeto Interdisciplinar V.
 
-## Stack pretendida
+O sistema tem como objetivo auxiliar o gerenciamento do processo de recebimento de cargas em um centro de distribuição, permitindo registrar, acompanhar e consultar informações relacionadas às cargas recebidas.
 
-- Frontend: React
-- Backend: Node.js + Express
-- Banco de dados: MySQL
-- Dashboard: React
-- Assistente de IA: integração com API de IA
+## Funcionalidades
 
-## Objetivo
+- Cadastro de cargas
+- Consulta de cargas
+- Edição de cargas
+- Exclusão de cargas
+- Alteração de status das cargas
+- Registro automático do histórico de status
+- Consulta do histórico das cargas
+- Cadastro de usuários
+- Login de usuários
+- Autenticação utilizando JWT
+- Proteção de rotas da API
+- Registro do usuário responsável pelas alterações de status
 
-Centralizar o registro e acompanhamento das cargas recebidas, permitindo consultar o histórico das operações e analisar indicadores relacionados ao processo de recebimento.
+## Tecnologias
 
-## Status do projeto
+### Frontend
+- React
 
-Em fase de planejamento e definição de requisitos.
+### Backend
+- Node.js
+- Express
+
+### Banco de Dados
+- MySQL
+
+### Segurança
+- bcrypt
+- JSON Web Token (JWT)
+
+## Arquitetura
+
+O backend utiliza uma arquitetura em camadas baseada no padrão MVC, complementada por Services e Repositories.
+
+Fluxo principal:
+
+Routes
+  ↓
+Controllers
+  ↓
+Services
+  ↓
+Repositories
+  ↓
+MySQL
