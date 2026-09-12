@@ -55,7 +55,7 @@ CREATE TABLE Carga (
     hora_chegada TIME NOT NULL,
     hora_docagem TIME,
     hora_finalizacao TIME,
-    status VARCHAR(30) NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'SEM_STATUS',
     ativo BOOLEAN NOT NULL DEFAULT TRUE,
 
     CONSTRAINT chk_carga_tipo
