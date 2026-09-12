@@ -45,14 +45,16 @@ async function listarTodas() {
             c.hora_docagem,
             c.hora_finalizacao,
             c.status,
+            c.id_fornecedor,
             f.nome AS fornecedor
         FROM Carga c
         INNER JOIN Fornecedor f
             ON c.id_fornecedor = f.id
-        ORDER BY c.data DESC, c.id DESC
+        WHERE c.ativo = TRUE
+        ORDER BY c.id DESC
     `;
 
-    const [resultado] = await db.query(sql);
+    const [resultado] = await db.execute(sql);
 
     return resultado;
 }
@@ -75,6 +77,7 @@ async function buscarPorId(id) {
         INNER JOIN Fornecedor f
             ON c.id_fornecedor = f.id
         WHERE c.id = ?
+          AND c.ativo = TRUE
     `;
 
     const [resultado] = await db.execute(sql, [id]);
@@ -118,7 +121,8 @@ async function atualizar(id, carga) {
 
 async function excluir(id) {
     const sql = `
-        DELETE FROM Carga
+        UPDATE Carga
+        SET ativo = FALSE
         WHERE id = ?
     `;
 
