@@ -9,7 +9,7 @@ O sistema tem como objetivo auxiliar o gerenciamento do processo de recebimento 
 - Cadastro de cargas
 - Consulta de cargas
 - Edição de cargas
-- Exclusão de cargas
+- Exclusão lógica de cargas
 - Alteração de status das cargas
 - Registro automático do histórico de status
 - Consulta do histórico das cargas
