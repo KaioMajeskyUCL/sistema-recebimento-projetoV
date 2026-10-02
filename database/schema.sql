@@ -1,4 +1,6 @@
-CREATE DATABASE IF NOT EXISTS sistema_recebimento;
+DROP DATABASE IF EXISTS sistema_recebimento;
+
+CREATE DATABASE sistema_recebimento;
 
 USE sistema_recebimento;
 
@@ -40,6 +42,15 @@ CREATE TABLE TipoProblema (
     nome VARCHAR(100) NOT NULL UNIQUE,
     descricao VARCHAR(255)
 );
+
+INSERT INTO TipoProblema (nome, descricao) VALUES
+('AVARIA', 'Produto ou embalagem com avaria'),
+('SOBRA_FALTA', 'Divergência entre a quantidade recebida e a quantidade esperada'),
+('TEMPERATURA', 'Problema relacionado à temperatura da carga'),
+('NOTA_FISCAL', 'Problema relacionado à nota fiscal ou documentação'),
+('VALIDADE', 'Problema relacionado à validade dos produtos'),
+('MOTORISTA', 'Ocorrência relacionada ao motorista'),
+('OUTRO', 'Problema que não se enquadra nas demais categorias');
 
 
 -- =========================================

@@ -1,21 +1,19 @@
 const express = require('express');
 require('dotenv').config();
-
 const db = require('./config/database');
-
 const cargaRoutes = require('./routes/cargaRoutes');
 const fornecedorRoutes = require('./routes/fornecedorRoutes');
-
+const tipoProblemaRoutes = require('./routes/tipoProblemaRoutes');
 const app = express();
-
 const authRoutes = require('./routes/authRoutes');
+const problemaRoutes = require('./routes/problemaRoutes');
 
 app.use(express.json());
-
 app.use('/auth', authRoutes);
-
 app.use('/cargas', cargaRoutes);
 app.use('/fornecedores', fornecedorRoutes);
+app.use('/tipos-problema', tipoProblemaRoutes);
+app.use('/problemas', problemaRoutes);
 
 app.get('/', (req, res) => {
     res.json({
