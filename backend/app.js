@@ -4,6 +4,7 @@ require('dotenv').config();
 const db = require('./config/database');
 
 const cargaRoutes = require('./routes/cargaRoutes');
+const fornecedorRoutes = require('./routes/fornecedorRoutes');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 
 app.use('/cargas', cargaRoutes);
+app.use('/fornecedores', fornecedorRoutes);
 
 app.get('/', (req, res) => {
     res.json({
