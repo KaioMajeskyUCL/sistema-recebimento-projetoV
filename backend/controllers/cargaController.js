@@ -35,12 +35,38 @@ async function criar(req, res) {
 
 async function listarTodas(req, res) {
     try {
-        const cargas = await cargaService.listarTodas();
+        const {
+    page,
+    limit,
+    status,
+    tipo,
+    id_fornecedor,
+    data_inicio,
+    data_fim,
+    numero_carga
+} = req.query;
 
-        res.status(200).json(cargas);
+       const resultado = await cargaService.listarTodas(
+    page,
+    limit,
+    status,
+    tipo,
+    id_fornecedor,
+    data_inicio,
+    data_fim,
+    numero_carga
+);
+
+        res.status(200).json(resultado);
 
     } catch (erro) {
         console.error(erro);
+
+        if (erro.status === 400) {
+            return res.status(400).json({
+                mensagem: erro.message
+            });
+        }
 
         res.status(500).json({
             mensagem: 'Erro ao consultar cargas.'

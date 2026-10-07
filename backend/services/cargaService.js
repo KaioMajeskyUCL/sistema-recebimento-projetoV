@@ -32,8 +32,126 @@ async function criar(carga) {
     return await cargaRepository.criar(carga);
 }
 
-async function listarTodas() {
-    return await cargaRepository.listarTodas();
+async function listarTodas(
+    pagina = 1,
+    limite = 20,
+    status = null,
+    tipo = null,
+    idFornecedor = null,
+    dataInicio = null,
+    dataFim = null,
+    numeroCarga = null
+) {
+    pagina = Number(pagina);
+    limite = Number(limite);
+
+    if (pagina < 1 || !Number.isInteger(pagina)) {
+        pagina = 1;
+    }
+
+    if (limite < 1 || !Number.isInteger(limite)) {
+        limite = 20;
+    }
+
+    if (limite > 100) {
+        limite = 100;
+    }
+
+    const statusValidos = [
+        'SEM_STATUS',
+        'PRESENTE',
+        'DOCADO',
+        'EM_CONFERENCIA',
+        'FINALIZADO',
+        'COM_PROBLEMAS'
+    ];
+
+    if (status && !statusValidos.includes(status)) {
+        const erro = new Error('Status inválido.');
+        erro.status = 400;
+        throw erro;
+    }
+
+    const tiposValidos = [
+        'CARGA_SECA',
+        'CAMARA_FRIA'
+    ];
+
+    if (tipo && !tiposValidos.includes(tipo)) {
+        const erro = new Error('Tipo de carga inválido.');
+        erro.status = 400;
+        throw erro;
+    }
+
+    if (idFornecedor) {
+    idFornecedor = Number(idFornecedor);
+
+    if (!Number.isInteger(idFornecedor) || idFornecedor < 1) {
+        const erro = new Error('Fornecedor inválido.');
+        erro.status = 400;
+        throw erro;
+    }
+}
+
+const formatoData = /^\d{4}-\d{2}-\d{2}$/;
+
+if (dataInicio && !formatoData.test(dataInicio)) {
+    const erro = new Error('Data inicial inválida. Use o formato YYYY-MM-DD.');
+    erro.status = 400;
+    throw erro;
+}
+
+if (dataFim && !formatoData.test(dataFim)) {
+    const erro = new Error('Data final inválida. Use o formato YYYY-MM-DD.');
+    erro.status = 400;
+    throw erro;
+}
+
+if (dataInicio && dataFim && dataInicio > dataFim) {
+    const erro = new Error('A data inicial não pode ser maior que a data final.');
+    erro.status = 400;
+    throw erro;
+}
+
+if (numeroCarga) {
+    numeroCarga = Number(numeroCarga);
+
+    if (!Number.isInteger(numeroCarga) || numeroCarga < 1) {
+        const erro = new Error('Número da carga inválido.');
+        erro.status = 400;
+        throw erro;
+    }
+}
+
+const cargas = await cargaRepository.listarTodas(
+    pagina,
+    limite,
+    status,
+    tipo,
+    idFornecedor,
+    dataInicio,
+    dataFim,
+    numeroCarga
+);
+
+const total = await cargaRepository.contarTodas(
+    status,
+    tipo,
+    idFornecedor,
+    dataInicio,
+    dataFim,
+    numeroCarga
+);
+
+    return {
+        dados: cargas,
+        paginacao: {
+            pagina,
+            limite,
+            total,
+            totalPaginas: Math.ceil(total / limite)
+        }
+    };
 }
 
 async function buscarPorId(id) {

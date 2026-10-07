@@ -33,8 +33,19 @@ async function criar(carga) {
     return resultado;
 }
 
-async function listarTodas() {
-    const sql = `
+async function listarTodas(
+    pagina = 1,
+    limite = 20,
+    status = null,
+    tipo = null,
+    idFornecedor = null,
+    dataInicio = null,
+    dataFim = null,
+    numeroCarga = null
+) {
+    const offset = (pagina - 1) * limite;
+
+    let sql = `
         SELECT
             c.id,
             c.numero_carga,
@@ -51,12 +62,101 @@ async function listarTodas() {
         INNER JOIN Fornecedor f
             ON c.id_fornecedor = f.id
         WHERE c.ativo = TRUE
-        ORDER BY c.id DESC
     `;
 
-    const [resultado] = await db.execute(sql);
+    const valores = [];
+
+    if (status) {
+        sql += ` AND c.status = ?`;
+        valores.push(status);
+    }
+
+    if (tipo) {
+        sql += ` AND c.tipo_carga = ?`;
+        valores.push(tipo);
+    }
+
+    if (idFornecedor) {
+    sql += ` AND c.id_fornecedor = ?`;
+    valores.push(idFornecedor);
+    }
+
+    if (dataInicio) {
+    sql += ` AND c.data >= ?`;
+    valores.push(dataInicio);
+}
+
+if (dataFim) {
+    sql += ` AND c.data <= ?`;
+    valores.push(dataFim);
+}
+
+if (numeroCarga) {
+    sql += ` AND numero_carga = ?`;
+    valores.push(numeroCarga);
+}
+
+    sql += `
+        ORDER BY c.id DESC
+        LIMIT ? OFFSET ?
+    `;
+
+    valores.push(limite, offset);
+
+    const [resultado] = await db.query(sql, valores);
 
     return resultado;
+}
+
+async function contarTodas(
+    status = null,
+    tipo = null,
+    idFornecedor = null,
+    dataInicio = null,
+    dataFim = null,
+    numeroCarga = null
+) {
+    let sql = `
+        SELECT COUNT(*) AS total
+        FROM Carga
+        WHERE ativo = TRUE
+    `;
+
+    const valores = [];
+
+    if (status) {
+        sql += ` AND status = ?`;
+        valores.push(status);
+    }
+
+    if (tipo) {
+        sql += ` AND tipo_carga = ?`;
+        valores.push(tipo);
+    }
+
+    if (idFornecedor) {
+    sql += ` AND id_fornecedor = ?`;
+    valores.push(idFornecedor);
+}
+
+if (dataInicio) {
+    sql += ` AND data >= ?`;
+    valores.push(dataInicio);
+}
+
+if (dataFim) {
+    sql += ` AND data <= ?`;
+    valores.push(dataFim);
+}
+
+if (numeroCarga) {
+    sql += ` AND numero_carga = ?`;
+    valores.push(numeroCarga);
+}
+
+    const [resultado] = await db.execute(sql, valores);
+
+    return resultado[0].total;
 }
 
 async function buscarPorId(id) {
@@ -205,6 +305,7 @@ async function buscarHistorico(idCarga) {
 module.exports = {
     criar,
     listarTodas,
+    contarTodas,
     buscarPorId,
     atualizar,
     excluir,
