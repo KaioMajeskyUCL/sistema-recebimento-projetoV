@@ -94,6 +94,9 @@ CREATE TABLE Carga (
 );
 
 
+CREATE INDEX idx_carga_status_ativo_data
+ON Carga (status, ativo, data);
+
 -- =========================================
 -- TABELA: Problema
 -- =========================================
