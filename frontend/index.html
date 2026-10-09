@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Gestão de Cargas</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>Gestão de Recebimento de Cargas</h1>
+        <p>Dashboard Operacional</p>
+    </header>
+
+    <main>
+
+        <section class="indicadores">
+            <div class="card">
+                <h3>Total de Cargas</h3>
+                <p id="totalCargas">--</p>
+            </div>
+
+            <div class="card">
+                <h3>Total de Paletes</h3>
+                <p id="totalPaletes">--</p>
+            </div>
+
+            <div class="card">
+                <h3>Tempo Médio de Espera</h3>
+                <p id="tempoMedioEspera">--</p>
+                <span>minutos</span>
+            </div>
+
+            <div class="card">
+                <h3>Tempo Médio de Descarga</h3>
+                <p id="tempoMedioDescarga">--</p>
+                <span>minutos</span>
+            </div>
+        </section>
+
+        <section class="graficos">
+
+            <div class="grafico-card">
+                <h2>Cargas por Tipo</h2>
+                <canvas id="graficoTipos"></canvas>
+            </div>
+
+            <div class="grafico-card">
+                <h2>Cargas por Fornecedor</h2>
+                <canvas id="graficoFornecedores"></canvas>
+            </div>
+
+            <div class="grafico-card">
+                <h2>Cargas com Problemas</h2>
+                <p id="cargasComProblemas">--</p>
+            </div>
+
+            <div class="grafico-card">
+                <h2>Problemas por Tipo</h2>
+                <canvas id="graficoProblemas"></canvas>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

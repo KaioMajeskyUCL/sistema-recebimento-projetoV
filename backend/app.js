@@ -8,6 +8,7 @@ const app = express();
 const authRoutes = require('./routes/authRoutes');
 const problemaRoutes = require('./routes/problemaRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const path = require('path');
 
 app.use(express.json());
 app.use('/auth', authRoutes);
@@ -39,6 +40,10 @@ app.get('/teste-db', async (req, res) => {
         });
     }
 });
+
+app.use('/frontend', express.static(
+    path.join(__dirname, '../frontend')
+));
 
 const PORT = process.env.PORT || 3000;
 
