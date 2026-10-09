@@ -9,6 +9,7 @@ const authRoutes = require('./routes/authRoutes');
 const problemaRoutes = require('./routes/problemaRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const path = require('path');
+const assistenteRoutes = require('./routes/assistenteRoutes');
 
 app.use(express.json());
 app.use('/auth', authRoutes);
@@ -17,6 +18,7 @@ app.use('/fornecedores', fornecedorRoutes);
 app.use('/tipos-problema', tipoProblemaRoutes);
 app.use('/problemas', problemaRoutes);
 app.use('/dashboard', dashboardRoutes);
+app.use('/assistente', assistenteRoutes);
 
 app.get('/', (req, res) => {
     res.json({

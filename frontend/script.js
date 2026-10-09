@@ -225,3 +225,89 @@ function criarGraficoProblemas(problemasPorTipo) {
 
 
 carregarDashboard();
+
+
+/* Assistente IA */
+
+const formAssistente = document.getElementById('formAssistente');
+const perguntaIA = document.getElementById('perguntaIA');
+const chatMensagens = document.getElementById('chatMensagens');
+const botaoEnviarIA = document.getElementById('botaoEnviarIA');
+
+function adicionarMensagem(texto, classe) {
+    const mensagem = document.createElement('p');
+
+    mensagem.className = classe;
+    mensagem.textContent = texto;
+
+    chatMensagens.appendChild(mensagem);
+    chatMensagens.scrollTop = chatMensagens.scrollHeight;
+}
+
+formAssistente.addEventListener('submit', async function (evento) {
+    evento.preventDefault();
+
+    const pergunta = perguntaIA.value.trim();
+
+    if (!pergunta) return;
+
+    const token = sessionStorage.getItem('token');
+
+    if (!token) {
+        adicionarMensagem(
+            'Sua sessão não foi encontrada. Faça login novamente.',
+            'mensagem-ia'
+        );
+        return;
+    }
+
+    adicionarMensagem(`Você: ${pergunta}`, 'mensagem-usuario');
+
+    perguntaIA.value = '';
+    botaoEnviarIA.disabled = true;
+    botaoEnviarIA.textContent = 'Aguarde...';
+
+    try {
+
+const resposta = await fetch(
+    'http://localhost:3000/assistente/perguntar',
+    {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ pergunta }),
+        signal: AbortSignal.timeout(30000)
+    }
+);
+
+
+        const dados = await resposta.json();
+
+        if (!resposta.ok) {
+            throw new Error(
+                dados.mensagem || `Erro HTTP ${resposta.status}`
+            );
+        }
+
+        adicionarMensagem(
+            `Assistente: ${dados.resposta}`,
+            'mensagem-ia'
+        );
+
+    } catch (erro) {
+        console.error('Erro no chat:', erro);
+
+        adicionarMensagem(
+            `Erro: ${erro.message}`,
+            'mensagem-ia'
+        );
+
+    } finally {
+        botaoEnviarIA.disabled = false;
+        botaoEnviarIA.textContent = 'Enviar';
+        perguntaIA.focus();
+    }
+});
+
