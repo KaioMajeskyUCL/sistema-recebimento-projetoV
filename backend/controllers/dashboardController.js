@@ -15,6 +15,32 @@ async function obterResumo(req, res) {
     }
 }
 
+
+async function obterResumoPorPeriodo(req, res) {
+    try {
+        const { data_inicio, data_fim } = req.query;
+
+        const resultado =
+            await dashboardService.obterResumoPorPeriodo(
+                data_inicio,
+                data_fim
+            );
+
+        return res.status(200).json(resultado);
+
+    } catch (erro) {
+        console.error('Erro no filtro por período:', erro.message);
+
+        return res.status(erro.status || 500).json({
+            mensagem: erro.status === 400
+                ? erro.message
+                : 'Erro ao consultar indicadores por período.'
+        });
+    }
+}
+
+
 module.exports = {
-    obterResumo
+    obterResumo,
+     obterResumoPorPeriodo
 };

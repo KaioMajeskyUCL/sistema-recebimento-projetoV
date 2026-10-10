@@ -1,7 +1,7 @@
 
 const API_URL = 'http://localhost:3000/dashboard';
 
-async function carregarDashboard() {
+async function carregarDashboard(dataInicio = null, dataFim = null) {
     const token = sessionStorage.getItem('token');
 
     if (!token) {
@@ -10,7 +10,20 @@ async function carregarDashboard() {
     }
 
     try {
-        const resposta = await fetch(API_URL, {
+        
+let url = API_URL;
+
+if (dataInicio && dataFim) {
+    const parametros = new URLSearchParams({
+        data_inicio: dataInicio,
+        data_fim: dataFim
+    });
+
+    url = `${API_URL}/periodo?${parametros.toString()}`;
+}
+
+const resposta = await fetch(url, {
+
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -49,8 +62,18 @@ async function carregarDashboard() {
 }
 
 
+function limparGrafico(idCanvas) {
+    const grafico = Chart.getChart(idCanvas);
+
+    if (grafico) {
+        grafico.destroy();
+    }
+}
+
+
 function criarGraficoTipos(cargasPorTipo) {
     const canvas = document.getElementById('graficoTipos');
+    limparGrafico('graficoTipos');
 
     const nomes = cargasPorTipo.map(item => {
         return item.tipo === 'CARGA_SECA'
@@ -106,6 +129,8 @@ function criarGraficoTipos(cargasPorTipo) {
 
 function criarGraficoFornecedores(cargasPorFornecedor) {
     const canvas = document.getElementById('graficoFornecedores');
+    
+limparGrafico('graficoFornecedores');
 
     const nomes = cargasPorFornecedor.map(
         item => item.fornecedor
@@ -160,11 +185,25 @@ function criarGraficoFornecedores(cargasPorFornecedor) {
 
 function criarGraficoProblemas(problemasPorTipo) {
     const canvas = document.getElementById('graficoProblemas');
+    limparGrafico('graficoProblemas');
+
+    
+const mensagemAnterior = canvas.parentElement.querySelector(
+    '.mensagem-sem-problemas'
+);
+
+if (mensagemAnterior) {
+    mensagemAnterior.remove();
+}
+
+canvas.style.display = '';
+
 
     if (problemasPorTipo.length === 0) {
         canvas.style.display = 'none';
 
         const mensagem = document.createElement('p');
+        mensagem.className = 'mensagem-sem-problemas';
         mensagem.textContent = 'Nenhum problema registrado.';
         mensagem.style.color = '#94a3b8';
 
@@ -311,3 +350,32 @@ const resposta = await fetch(
     }
 });
 
+
+const btnFiltrarPeriodo = document.getElementById('btnFiltrarPeriodo');
+const btnLimparPeriodo = document.getElementById('btnLimparPeriodo');
+
+
+btnFiltrarPeriodo.addEventListener('click', async () => {
+    const dataInicio = document.getElementById('dataInicio').value;
+    const dataFim = document.getElementById('dataFim').value;
+
+    if (!dataInicio || !dataFim) {
+        alert('Selecione a data inicial e a data final.');
+        return;
+    }
+
+    if (dataInicio > dataFim) {
+        alert('A data inicial não pode ser posterior à data final.');
+        return;
+    }
+
+    await carregarDashboard(dataInicio, dataFim);
+});
+
+
+btnLimparPeriodo.addEventListener('click', async () => {
+    document.getElementById('dataInicio').value = '';
+    document.getElementById('dataFim').value = '';
+
+    await carregarDashboard();
+});
