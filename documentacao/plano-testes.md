@@ -63,6 +63,12 @@ original do documento de requisitos.
 | CT-23 | RF13 | Consultar indicadores com data inexistente | GET /dashboard/periodo?data_inicio=2026-02-30&data_fim=2026-03-10 com JWT válido | HTTP 400, data inválida | HTTP 400, data inválida | Aprovado |
 | CT-24 | RF13 | Limpar filtro de período no Dashboard | Selecionar 01/10/2026 a 09/10/2026, clicar em Filtrar período e depois em Limpar filtro | Campos de data limpos e indicadores e gráficos gerais restaurados | Campos de data limpos e indicadores e gráficos gerais restaurados | Aprovado |
 | CT-25 | RF13 / RNF04 | Acessar indicadores por período sem autenticação | GET /dashboard/periodo sem token JWT | HTTP 401, acesso negado | HTTP 401, acesso negado após correção do middleware de autenticação | Aprovado |
+CT-26	RF02 — Consultar cargas	Consultar cargas cadastradas	GET /cargas com JWT válido	HTTP 200 e listagem de cargas	HTTP 200 retornado	Aprovado
+CT-27	RF03 — Editar carga	Alterar quantidade de paletes	PUT /cargas/2 com JWT; 22 → 25 paletes	HTTP 200 e alteração persistida	HTTP 200; GET confirmou 25 paletes
+CT-30	RF06	Registrar horários de chegada, docagem e finalização via PUT e confirmar persistência com GET
+CT-31	RF07	Calcular tempos de espera e descarga da carga 1002 por SQL	Aprovado — 30 e 45 minutos
+CT-32	RF07 / RF12	Comparar médias de espera e descarga retornadas pelo Dashboard com consultas SQL	Aprovado
+CT-33	RF04 — Exclusão lógica	Aprovado: carga arquivada permanece no banco e é excluída das consultas de cargas ativas
 
 ### 4. Matriz de rastreabilidade dos requisitos funcionais
 

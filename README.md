@@ -80,24 +80,24 @@ Fluxo principal:
 
 ```text
 Frontend (HTML, CSS e JavaScript)
-             |
-             v
-       API REST (Express)
-             |
-             v
-           Routes
-             |
-             v
-         Controllers
-             |
-             v
-          Services
-             |
-             v
-        Repositories
-             |
-             v
-           MySQL
+             |
+             v
+       API REST (Express)
+             |
+             v
+           Routes
+             |
+             v
+         Controllers
+             |
+             v
+          Services
+             |
+             v
+        Repositories
+             |
+             v
+           MySQL
 ```
 
 A integração com o Google Gemini é realizada pelo backend.
@@ -124,42 +124,139 @@ As rotas protegidas exigem autenticação JWT.
 ## Execução do projeto
 
 ### Pré-requisitos
+
 - Node.js e npm
 - MySQL
-- Chave de API do Google Gemini para utilizar o Assistente de IA
+- Git
+- Chave de API do Google Gemini (necessária para utilizar o Assistente de IA)
 
-### Configuração
+### Instalação
 
-1. Clone o repositório.
-2. Crie o banco de dados utilizando o script `database/schema.sql`.
-3. Acesse a pasta `backend`.
-4. Instale as dependências com `npm install`.
-5. Configure as variáveis de ambiente tomando como referência o arquivo `.env.example`.
-6. Inicie o servidor com `npm run dev`.
+**1. Clonar o repositório**
 
-A interface Web pode ser acessada pelo endereço:
+```bash
+git clone URL_DO_REPOSITORIO
+cd NOME_DO_PROJETO
+```
 
-`http://localhost:3000/frontend/index.html`
+Substitua os valores pelo endereço e nome reais do repositório.
 
-**Atenção:** o script SQL inicial pode recriar o banco de dados. Não o execute sobre uma base com dados que precisem ser preservados.
+**2. Preparar o banco de dados**
+
+No MySQL Workbench, execute os scripts na seguinte ordem:
+
+1. `database/schema.sql` — cria o banco de dados e suas tabelas.
+2. `database/seed.sql` — insere fornecedores, cargas e problemas de demonstração.
+
+O banco criado terá o nome `sistema_recebimento`.
+
+**Atenção:** o arquivo `schema.sql` contém `DROP DATABASE IF EXISTS`. Sua execução remove o banco existente e todos os seus dados. Utilize-o somente em uma instalação nova ou em um ambiente descartável.
+
+**3. Instalar as dependências**
+
+Acesse a pasta do backend:
+
+```bash
+cd backend
+npm install
+```
+
+**4. Configurar as variáveis de ambiente**
+
+Crie o arquivo `.env` na pasta `backend`, utilizando `.env.example` como referência.
+
+Configure as variáveis de conexão com o MySQL, a chave de autenticação JWT e a chave da API Gemini, conforme as variáveis utilizadas pelo projeto.
+
+Para o banco criado pelo script SQL, utilize:
+
+```env
+DB_NAME=sistema_recebimento
+```
+
+Não publique o arquivo `.env` nem credenciais reais no GitHub.
+
+**5. Iniciar o servidor**
+
+```bash
+npm run dev
+```
+
+**6. Cadastrar o primeiro usuário**
+
+Utilize a rota:
+
+```http
+POST http://localhost:3000/auth/cadastro
+Content-Type: application/json
+
+{
+  "nome": "Usuario Demonstracao",
+  "email": "demo@exemplo.com",
+  "senha": "SENHA_ESCOLHIDA_PELO_USUARIO",
+  "perfil": "ENCARREGADO"
+}
+```
+
+O sistema utiliza bcrypt para armazenar o hash da senha.
+
+**7. Realizar login**
+
+```http
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "demo@exemplo.com",
+  "senha": "SENHA_ESCOLHIDA_PELO_USUARIO"
+}
+```
+
+Após a autenticação, a API retorna um token JWT que deve ser enviado nas requisições protegidas.
+
+**8. Acessar a interface Web**
+
+Com o servidor em execução, acesse:
+
+http://localhost:3000/frontend/index.html
+
+O endereço acima pressupõe a configuração de arquivos estáticos utilizada no ambiente de desenvolvimento.
+
+### Dados iniciais de demonstração
+
+O script `seed.sql` disponibiliza:
+
+| Dados | Quantidade |
+|---|---:|
+| Fornecedores | 3 |
+| Cargas | 8 |
+| Tipos de problemas | 7 |
+| Problemas registrados | 2 |
+
+Os sete tipos de problemas são inseridos pelo `schema.sql`.
+
+O cadastro do primeiro usuário é realizado separadamente pela API.
 
 ## Documentação
 
-Os detalhes de implementação e validação da Entrega 3 estão disponíveis na pasta `documentacao/`:
+A documentação técnica do projeto está organizada na pasta `documentacao/`, reunindo os registros de implementação, testes e evolução do sistema ao longo das entregas do Projeto Interdisciplinar V.
 
-- `cruds-validacoes.md`
-- `indicadores-dashboard.md`
-- `integracao-ia.md`
-- `analise-desempenho.md`
-- `plano-testes.md`
-- `alteracoes-entrega3.md`
+### Documentação técnica
 
-## Limitações conhecidas
+- `cruds-validacoes.md` — implementação das operações CRUD e validações.
+- `indicadores-dashboard.md` — indicadores gerenciais e consultas utilizadas no Dashboard.
+- `integracao-ia.md` — integração com o Google Gemini e funcionamento do Assistente de IA.
+- `analise-desempenho.md` — análise de desempenho das consultas SQL.
+- `plano-testes.md` — planejamento, execução e resultados dos testes.
+- `alteracoes-entrega3.md` — registro das alterações realizadas na terceira entrega.
 
-- O Assistente de IA utiliza indicadores gerais do Dashboard e ainda não executa consultas automáticas por períodos específicos mencionados nas perguntas.
-- O controle de permissões específicas por perfil de usuário ainda necessita de validação completa.
-- Os resultados dos testes de desempenho não demonstraram ganho significativo de velocidade com o índice SQL avaliado.
+### Documentação final
 
-## Contexto acadêmico
+A Entrega 4 contempla também:
 
-O projeto foi desenvolvido de forma incremental durante a disciplina Projeto Interdisciplinar V, contemplando levantamento de requisitos, modelagem de dados, implementação, integração, testes e documentação técnica.
+- Relatório final consolidado, reunindo as etapas do projeto.
+- Manual do usuário com orientações e capturas de tela.
+- Registro das revisões realizadas ao longo das entregas.
+- Matriz de rastreabilidade entre requisitos, implementação e testes.
+- Vídeo demonstrativo do sistema em funcionamento.
+
+Os documentos finais serão disponibilizados junto aos demais materiais da entrega, conforme sua conclusão.

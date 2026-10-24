@@ -1,5 +1,4 @@
-
-const { rateLimit } = require('express-rate-limit');
+const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
 
 const assistenteRateLimit = rateLimit({
     windowMs: 60 * 1000,
@@ -8,13 +7,15 @@ const assistenteRateLimit = rateLimit({
     legacyHeaders: false,
 
     keyGenerator: (req) => {
-        // Utiliza o identificador do usuário autenticado.
-        // Se não existir, utiliza o IP.
-        return String(
-            req.usuario?.id ??
-            req.user?.id ??
-            req.ip
-        );
+        // Prioriza o identificador do usuário autenticado.
+        const usuarioId = req.usuario?.id ?? req.user?.id;
+
+        if (usuarioId != null) {
+            return `usuario:${usuarioId}`;
+        }
+
+        // Trata corretamente endereços IPv4 e IPv6.
+        return ipKeyGenerator(req.ip);
     },
 
     message: {
