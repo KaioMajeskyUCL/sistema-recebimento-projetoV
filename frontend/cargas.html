@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Cargas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="pagina-cargas">
+        <header>
+            <h1>Gestão de Cargas</h1>
+            <p>Cadastro e acompanhamento de recebimentos</p>
+            <a href="index.html">Voltar ao Dashboard</a>
+            <button type="button" onclick="sair()">Sair</button>
+        </header>
+
+
+        <section class="formulario-cargas">
+            <h2>Cadastrar Nova Carga</h2>
+
+            <form id="formCarga">
+
+    <div class="campo-carga">
+        <label for="numero_carga">Número da carga</label>
+        <input type="number" id="numero_carga" min="1" required>
+    </div>
+
+    <div class="campo-carga">
+        <label for="id_fornecedor">Fornecedor</label>
+        <select id="id_fornecedor" required>
+            <option value="">Selecione um fornecedor</option>
+        </select>
+    </div>
+
+    <div class="campo-carga">
+        <label for="data">Data</label>
+        <input type="date" id="data" required>
+    </div>
+
+    <div class="campo-carga">
+        <label for="tipo_carga">Tipo de carga</label>
+        <select id="tipo_carga" required>
+            <option value="">Selecione o tipo</option>
+            <option value="CARGA_SECA">Carga Seca</option>
+            <option value="CAMARA_FRIA">Câmara Fria</option>
+        </select>
+    </div>
+
+    <div class="campo-carga">
+        <label for="quantidade_paletes">Quantidade de paletes</label>
+        <input type="number" id="quantidade_paletes" min="1" required>
+    </div>
+
+    <div class="campo-carga">
+        <label for="hora_chegada">Hora de chegada</label>
+        <input type="time" id="hora_chegada" required>
+    </div>
+
+    <div class="campo-carga">
+        <label for="status">Status</label>
+        <select id="status" required>
+            <option value="SEM_STATUS">Sem Status</option>
+            <option value="PRESENTE">Presente</option>
+            <option value="DOCADO">Docado</option>
+            <option value="EM_CONFERENCIA">Em Conferência</option>
+            <option value="FINALIZADO">Finalizado</option>
+            <option value="COM_PROBLEMAS">Com Problemas</option>
+        </select>
+    </div>
+
+    <div class="acoes-formulario">
+        <button type="submit" id="btnSalvarCarga">
+            Cadastrar Carga
+        </button>
+
+        <button type="button" id="btnCancelarEdicao" hidden>
+            Cancelar Edição
+        </button>
+    </div>
+
+</form>
+
+
+            <p id="mensagemCarga" role="status"></p>
+        </section>
+
+<section class="listagem-cargas">
+    <h2>Cargas Cadastradas</h2>
+
+    <div class="tabela-container">
+        <table id="tabelaCargas">
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Data</th>
+                    <th>Fornecedor</th>
+                    <th>Tipo</th>
+                    <th>Paletes</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody id="corpoTabelaCargas">
+                <tr>
+                    <td colspan="6">Carregando cargas...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+<div class="filtros-cargas">
+    <div>
+        <label for="filtroNumero">Número da carga</label>
+        <input
+            type="number"
+            id="filtroNumero"
+            min="1"
+            placeholder="Ex.: 90001"
+        >
+    </div>
+
+    <div>
+        <label for="filtroStatus">Status</label>
+        <select id="filtroStatus">
+            <option value="">Todos os status</option>
+            <option value="SEM_STATUS">Sem Status</option>
+            <option value="PRESENTE">Presente</option>
+            <option value="DOCADO">Docado</option>
+            <option value="EM_CONFERENCIA">Em Conferência</option>
+            <option value="FINALIZADO">Finalizado</option>
+            <option value="COM_PROBLEMAS">Com Problemas</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="filtroTipo">Tipo de carga</label>
+        <select id="filtroTipo">
+            <option value="">Todos os tipos</option>
+            <option value="CARGA_SECA">Carga Seca</option>
+            <option value="CAMARA_FRIA">Câmara Fria</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="filtroFornecedor">Fornecedor</label>
+        <select id="filtroFornecedor">
+            <option value="">Todos os fornecedores</option>
+        </select>
+    </div>
+
+    <div class="acoes-filtros">
+        <button type="button" id="btnPesquisarCargas">
+            Pesquisar
+        </button>
+
+        <button type="button" id="btnLimparFiltros">
+            Limpar
+        </button>
+    </div>
+</div>
+
+
+    <p id="mensagemListaCargas" role="status"></p>
+    <div class="paginacao-cargas">
+    <button id="btnAnterior" type="button">Anterior</button>
+    <span id="infoPagina">Página 1</span>
+    <button id="btnProxima" type="button">Próxima</button>
+</div>
+</section>
+
+    </main>
+
+<dialog id="modalHistorico" class="modal-historico">
+    <div class="modal-historico-conteudo">
+        <div class="modal-historico-cabecalho">
+            <h2 id="tituloHistorico">Histórico da Carga</h2>
+            <button type="button" id="fecharHistorico">✕</button>
+        </div>
+
+        <p id="mensagemHistorico"></p>
+
+        <div class="tabela-historico-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data e Hora</th>
+                        <th>Status</th>
+                        <th>Usuário Responsável</th>
+                    </tr>
+                </thead>
+                <tbody id="corpoHistorico"></tbody>
+            </table>
+        </div>
+    </div>
+</dialog>
+
+<dialog id="modalStatus" class="modal-status">
+    <div class="modal-status-conteudo">
+        <h2>Alterar Status da Carga</h2>
+
+        <p id="identificacaoCargaStatus"></p>
+
+        <label for="novoStatusCarga">Novo status</label>
+        <select id="novoStatusCarga">
+            <option value="SEM_STATUS">Sem Status</option>
+            <option value="PRESENTE">Presente</option>
+            <option value="DOCADO">Docado</option>
+            <option value="EM_CONFERENCIA">Em Conferência</option>
+            <option value="FINALIZADO">Finalizado</option>
+            <option value="COM_PROBLEMAS">Com Problemas</option>
+        </select>
+
+        <div class="acoes-modal-status">
+            <button type="button" id="cancelarStatus">
+                Cancelar
+            </button>
+
+            <button type="button" id="salvarStatus">
+                Salvar Status
+            </button>
+        </div>
+    </div>
+</dialog>
+
+<dialog id="modalProblema" class="modal-problema">
+    <div class="modal-problema-conteudo">
+
+        <h2>Registrar Problema</h2>
+
+        <p id="identificacaoCargaProblema"></p>
+
+        <form id="formProblema">
+
+            <label for="tipoProblema">
+                Tipo de problema
+            </label>
+
+            <select id="tipoProblema" required>
+                <option value="">
+                    Selecione o tipo de problema
+                </option>
+            </select>
+
+            <label for="descricaoProblema">
+                Descrição da ocorrência
+            </label>
+
+            <textarea
+                id="descricaoProblema"
+                rows="4"
+                maxlength="255"
+                placeholder="Descreva o problema encontrado..."
+                required
+            ></textarea>
+
+            <p id="mensagemProblema" aria-live="polite"></p>
+
+            <div class="acoes-modal-problema">
+                <button type="button" id="cancelarProblema">
+                    Cancelar
+                </button>
+
+                <button type="submit" id="salvarProblema">
+                    Registrar Problema
+                </button>
+            </div>
+
+        </form>
+    </div>
+</dialog>
+
+<dialog id="modalListaProblemas" class="modal-problema">
+    <div class="modal-problema-conteudo">
+        <h2>Problemas da Carga</h2>
+
+        <p id="tituloListaProblemas"></p>
+
+        <div id="conteudoListaProblemas">
+            Carregando...
+        </div>
+
+        <button type="button" id="fecharListaProblemas">
+            Fechar
+        </button>
+    </div>
+</dialog>
+
+    <script src="cargas.js"></script>
+    <script>
+    function sair() {
+        sessionStorage.removeItem('token');
+        window.location.href = 'login.html';
+    }
+</script>
+</body>
+</html>

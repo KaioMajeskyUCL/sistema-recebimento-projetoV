@@ -4,10 +4,10 @@ const API_URL = 'http://localhost:3000/dashboard';
 async function carregarDashboard(dataInicio = null, dataFim = null) {
     const token = sessionStorage.getItem('token');
 
-    if (!token) {
-        alert('Token não encontrado. Faça login primeiro.');
-        return;
-    }
+if (!token) {
+    window.location.replace('login.html');
+    return;
+}
 
     try {
         
@@ -379,3 +379,13 @@ btnLimparPeriodo.addEventListener('click', async () => {
 
     await carregarDashboard();
 });
+
+// Encerrar sessão
+const btnSair = document.getElementById('btnSair');
+
+if (btnSair) {
+    btnSair.addEventListener('click', () => {
+        sessionStorage.removeItem('token');
+        window.location.replace('login.html');
+    });
+}

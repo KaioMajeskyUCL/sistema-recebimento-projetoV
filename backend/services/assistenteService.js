@@ -49,13 +49,13 @@ async function perguntar(pergunta) {
     try {
         const resposta = await ai.models.generateContent({
             model: 'gemini-3.8-flash',
-            contents: `
-                Indicadores reais do sistema:
-                ${JSON.stringify(contexto)}
+contents: `
+    Indicadores reais do sistema:
+    ${JSON.stringify(contexto)}
 
-                Pergunta do usuário:
-                ${pergunta.trim()}
-            `,
+    Pergunta do usuário:
+    ${pergunta.trim()}
+`,
             config: {
                 systemInstruction: `
                     Você é um assistente de análise de recebimento de cargas.
@@ -87,9 +87,11 @@ async function perguntar(pergunta) {
             mensagem: erro.message
         });
 
-        const falha = new Error(
-            'Assistente temporariamente indisponível.'
-        );
+const falha = new Error(
+    erro.status === 503
+        ? 'O Gemini está sobrecarregado no momento. Tente novamente em alguns instantes.'
+        : 'Não foi possível consultar o assistente de IA.'
+);
         falha.status = 503;
         throw falha;
     }

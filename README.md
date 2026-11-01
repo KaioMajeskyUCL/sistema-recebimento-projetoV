@@ -39,11 +39,20 @@ A aplicação oferece funcionalidades para controle de cargas, fornecedores e pr
 - Respostas contextualizadas com indicadores gerais do Dashboard
 - Limitação de requisições para controle de consumo
 
-### Segurança
-- Cadastro e autenticação de usuários
-- Armazenamento de senhas com bcrypt
-- Autenticação utilizando JSON Web Token (JWT)
-- Proteção das rotas privadas da API
+
+### Segurança e autenticação
+
+- Tela de cadastro de usuários integrada à API.
+- Tela de login com autenticação JWT.
+- Armazenamento seguro de senhas utilizando bcrypt.
+- Atribuição automática do perfil `AUXILIAR_ADMINISTRATIVO` no cadastro público.
+- Proteção das rotas privadas da API.
+- Redirecionamento de usuários não autenticados para o login.
+- Botão de logout nas páginas principais.
+- Encerramento da sessão no navegador ao realizar logout.
+- Validação de tokens JWT ausentes, inválidos ou expirados.
+- Limitação de requisições ao Assistente de IA.
+
 
 ## Tecnologias utilizadas
 
@@ -135,11 +144,9 @@ As rotas protegidas exigem autenticação JWT.
 **1. Clonar o repositório**
 
 ```bash
-git clone URL_DO_REPOSITORIO
-cd NOME_DO_PROJETO
+git clone https://github.com/KaioMajeskyUCL/sistema-recebimento-projetoV.git
+cd sistema-recebimento-projetoV
 ```
-
-Substitua os valores pelo endereço e nome reais do repositório.
 
 **2. Preparar o banco de dados**
 
@@ -181,7 +188,27 @@ Não publique o arquivo `.env` nem credenciais reais no GitHub.
 npm run dev
 ```
 
-**6. Cadastrar o primeiro usuário**
+
+### 6. Cadastrar um usuário
+
+Com o servidor em execução, acesse:
+
+http://localhost:3000/frontend/cadastro.html
+
+Preencha o formulário com:
+- Nome completo
+- E-mail
+- Senha
+- Confirmação da senha
+
+Após o cadastro, o usuário será redirecionado para a tela de login.
+
+Por segurança, os usuários cadastrados pela interface recebem automaticamente o perfil `AUXILIAR_ADMINISTRATIVO`.
+
+O sistema utiliza bcrypt para armazenar as senhas em formato de hash.
+
+O perfil `ENCARREGADO` não pode ser selecionado pelo cadastro público. Sua atribuição exige um procedimento administrativo autorizado.
+
 
 Utilize a rota:
 
@@ -217,7 +244,7 @@ Após a autenticação, a API retorna um token JWT que deve ser enviado nas requ
 
 Com o servidor em execução, acesse:
 
-http://localhost:3000/frontend/index.html
+http://localhost:3000/frontend/login.html
 
 O endereço acima pressupõe a configuração de arquivos estáticos utilizada no ambiente de desenvolvimento.
 

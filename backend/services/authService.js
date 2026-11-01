@@ -3,20 +3,13 @@ const usuarioRepository = require('../repositories/usuarioRepository');
 const jwt = require('jsonwebtoken');
 
 async function cadastrar(dados) {
-    const { nome, email, senha, perfil } = dados;
+const { nome, email, senha } = dados;
 
-    if (!nome || !email || !senha || !perfil) {
-        throw new Error('Todos os campos são obrigatórios.');
-    }
+const perfil = 'AUXILIAR_ADMINISTRATIVO';
 
-    const perfisValidos = [
-        'AUXILIAR_ADMINISTRATIVO',
-        'ENCARREGADO'
-    ];
-
-    if (!perfisValidos.includes(perfil)) {
-        throw new Error('Perfil de usuário inválido.');
-    }
+if (!nome || !email || !senha) {
+    throw new Error('Todos os campos são obrigatórios.');
+}
 
     if (senha.length < 6) {
         throw new Error('A senha deve possuir pelo menos 6 caracteres.');

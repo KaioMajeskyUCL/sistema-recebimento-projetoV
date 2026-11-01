@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestão de Fornecedores</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="pagina-fornecedores">
+
+        <header class="cabecalho-fornecedores">
+            <div>
+                <h1>Gestão de Fornecedores</h1>
+                <p>Cadastre e gerencie os fornecedores do recebimento.</p>
+            </div>
+            <button type="button" onclick="sair()">Sair</button>
+            <a href="index.html">Voltar ao Dashboard</a>
+        </header>
+
+        <section class="formulario-fornecedores">
+            <h2 id="tituloFormularioFornecedor">
+                Cadastrar Novo Fornecedor
+            </h2>
+
+            <form id="formFornecedor">
+
+                <div class="campo-fornecedor">
+                    <label for="nomeFornecedor">Nome do fornecedor</label>
+                    <input
+                        type="text"
+                        id="nomeFornecedor"
+                        maxlength="150"
+                        placeholder="Digite o nome do fornecedor"
+                        required
+                    >
+                </div>
+
+                <div class="campo-fornecedor">
+                    <label for="cnpjFornecedor">CNPJ</label>
+                    <input
+                        type="text"
+                        id="cnpjFornecedor"
+                        maxlength="18"
+                        placeholder="00.000.000/0000-00"
+                        required
+                    >
+                </div>
+
+                <div class="acoes-fornecedor">
+                    <button type="submit" id="btnSalvarFornecedor">
+                        Cadastrar Fornecedor
+                    </button>
+
+                    <button
+                        type="button"
+                        id="btnCancelarFornecedor"
+                        hidden
+                    >
+                        Cancelar Edição
+                    </button>
+                </div>
+
+            </form>
+
+            <p id="mensagemFornecedor" aria-live="polite"></p>
+        </section>
+
+        <section class="listagem-fornecedores">
+            <h2>Fornecedores Cadastrados</h2>
+
+            <div class="tabela-fornecedores-container">
+                <table id="tabelaFornecedores">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>CNPJ</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="corpoTabelaFornecedores">
+                        <tr>
+                            <td colspan="4">
+                                Carregando fornecedores...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="mensagemListaFornecedores" aria-live="polite"></p>
+        </section>
+
+    </main>
+
+    <script src="fornecedores.js"></script>
+    <script>
+    function sair() {
+        sessionStorage.removeItem('token');
+        window.location.href = 'login.html';
+    }
+</script>
+</body>
+</html>
