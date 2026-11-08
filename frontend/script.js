@@ -1,5 +1,5 @@
 
-const API_URL = 'http://localhost:3000/dashboard';
+const API_URL = '/dashboard';
 
 async function carregarDashboard(dataInicio = null, dataFim = null) {
     const token = sessionStorage.getItem('token');
@@ -309,7 +309,7 @@ formAssistente.addEventListener('submit', async function (evento) {
     try {
 
 const resposta = await fetch(
-    'http://localhost:3000/assistente/perguntar',
+    '/assistente/perguntar',
     {
         method: 'POST',
         headers: {
