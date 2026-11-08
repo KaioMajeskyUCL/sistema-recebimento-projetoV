@@ -14,7 +14,7 @@ formLogin.addEventListener('submit', async (evento) => {
     btnEntrar.textContent = 'Entrando...';
 
     try {
-        const resposta = await fetch('http://localhost:3000/auth/login', {
+        const resposta = await fetch('/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
